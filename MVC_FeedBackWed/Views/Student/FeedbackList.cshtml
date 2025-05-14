@@ -1,0 +1,105 @@
+﻿@model List<FeedbackModel>
+@{
+    int studentId = Context.Session.GetInt32("UserId") ?? 0; 
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Forms</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <style>
+        table {
+            margin-top: 10%;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
+
+        .message {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+            margin-top: 10%;
+        }
+    </style>
+</head>
+<body style="margin-top: 8%;">
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-info">
+            @ViewBag.Message
+        </div>
+
+        @if (ViewBag.Message == "No Feedback!" || ViewBag.Message == "Bạn đã hoàn thành tất cả Feedback!")
+        {
+            <div style="margin-top:3%;" class="mt-3">
+                <a href="@Url.Action("ClassInformation", "Student")" class="btn btn-primary">
+                    View Class Information
+                </a>
+            </div>
+        }
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <table id="feedbackTable" class="display">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Class</th>
+                    <th>Subject</th>
+                    <th>Teacher</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FeedbackFormId</td>
+                        <td>@item.ClassName</td>
+                        <td>@item.SubjectName</td>
+                        <td>@item.TeacherName</td>
+                        <td><a href="@Url.Action("FeedbackForm", "Student", new { studentId = studentId, formId = item.FeedbackFormId })" class="btn">Feedback</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <script>
+        $(document).ready(function () {
+            $('#feedbackTable').DataTable({
+                paging: true,        // Bật phân trang
+                pageLength: 5,       // Mỗi trang hiển thị 5 dòng
+                lengthChange: false
+            });
+        });
+    </script>
+
+</body>
+</html>

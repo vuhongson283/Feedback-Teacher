@@ -1,0 +1,140 @@
+﻿@{
+    int teacherId = Context.Session.GetInt32("UserId") ?? 0; // Lấy teacherId từ session
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class List</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <style>
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+            .btn:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body style="margin-top:3%;">
+
+    <h2>Class List</h2>
+
+    
+    
+        <table id="classTable" class="display">
+            <thead>
+                <tr>
+                    <th>Class ID</th>
+                    <th>Class Name</th>
+                    <th>Subject</th>
+                    <th>Number of Students</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    
+
+    <script>
+        $(document).ready(function () {
+            var teacherId = @teacherId;
+            if (teacherId > 0) {
+                loadClassList(teacherId);
+            } else {
+                alert("Can't find teacher ID");
+            }
+        });
+
+        function loadClassList(teacherId) {
+            $.ajax({
+                url: `https://localhost:7087/api/Teacher/getAllClass/${teacherId}`,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tableBody = $("#classTable tbody");
+                    tableBody.empty();
+
+                    data.forEach((item) => {
+                        var assignButton = item.hasActiveFeedback
+                            ? `<button class="btn" disabled style="background-color: gray; cursor: not-allowed;">Assigned</button>`
+                            : `<button class="btn" onclick="assignFeedback(${item.classId}, ${item.subjectId}, ${teacherId})">Assign Feedback</button>`;
+
+                        var row = `<tr>
+                                    <td>${item.classId}</td>
+                                    <td>${item.className}</td>
+                                    <td>${item.subjectName}</td>
+                                    <td>${item.numberOfStudent}</td>
+                                    <td>
+                                        <a href="/Teacher/FeedbackListByClass?classId=${item.classId}" class="btn">View Feedback</a>
+                                        ${assignButton}
+                                    </td>
+                                </tr>`;
+                        tableBody.append(row);
+                    });
+
+                    $('#classTable').DataTable({
+                        paging: true,
+                        pageLength: 5,
+                        lengthChange: false
+                    });
+                },
+                error: function (err) {
+                    console.error("Error fetching class data", err);
+                    alert("Failed to load class data.");
+                }
+            });
+        }
+
+
+        
+        function assignFeedback(classId, subjectId, teacherId) {
+            $.ajax({
+                url: `https://localhost:7087/api/Teacher/assignFeedback`,
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    classId: classId,
+                    subjectId: subjectId,
+                    teacherId: teacherId
+                }),
+                success: function (response) {
+                    alert(response.message); 
+                },
+                error: function (xhr) {
+                    var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "An error occurred!";
+                    alert("Error: " + errorMessage);
+                }
+            });
+        }
+        
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MVC_FeedBackWed</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MVC_FeedBackWed.styles.css" asp-append-version="true" />
+    <link rel="icon" type="image/png" href="~/img/logo.png" asp-append-version="true" />
+
+</head>
+<body>
+    <header class="bg-orange p-3 d-flex align-items-center justify-content-between  fixed-header">
+        <!-- Logo bên trái -->
+        <div>
+            <img src="/img/logo.png" alt="Logo" height="50">
+        </div>
+
+        <!-- Tabs ở giữa -->
+        
+
+        <!-- Chào User bên phải -->
+        <div class="text-white fw-bold d-flex align-items-center">
+            <span class="me-3">Hello, @(Context.Session.GetString("fullName") ?? "User")</span>
+
+            <!-- Nút Logout -->
+            <form method="post" action="/logout">
+                <button style="background-color: orangered;" type="submit" class="btn btn-light btn-sm">Logout</button>
+            </form>
+        </div>
+    </header>
+
+    <style>
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .bg-orange {
+            background: linear-gradient(90deg, #FF6600 0%, #004AAD 50%, #009E60 100%);
+            color: white;
+            padding: 15px 20px;
+            padding: 10px 20px;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#logoutBtn").click(function () {
+            $.post("/logout", function () {
+                window.location.href = "/login"; // Chuyển hướng về trang login sau khi logout
+            });
+        });
+    </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

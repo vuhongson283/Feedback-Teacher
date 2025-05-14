@@ -1,0 +1,91 @@
+﻿@{
+    int studentId = Context.Session.GetInt32("UserId") ?? 0;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Information</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <style>
+        table {
+            margin-top: 10%;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Class Information</h2>
+
+    <table id="classInforTable" class="display">
+        <thead>
+            <tr>
+                <th>ClassID</th>
+                <th>ClassName</th>
+                <th>Teacher</th>
+                <th>Subject</th>
+                <th>Number of students</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "https://localhost:7087/api/Student/getClassInformation/3",
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    var tableBody = $("#classInforTable tbody");
+                    tableBody.empty();
+
+                    console.log("API Response:", data); // Debug xem data có đúng không
+
+                    if (!data) {
+                        alert("No class information found!");
+                        return;
+                    }
+
+                    // Nếu API trả về object, chuyển thành array để tránh lỗi
+                    var classList = Array.isArray(data) ? data : [data];
+
+                    classList.forEach((item) => {
+                        var row = `<tr>
+                                    <td>${item.classId}</td>
+                                    <td>${item.className}</td>
+                                    <td>${item.teacherName}</td>
+                                    <td>${item.subjectName}</td>
+                                    <td>${item.studentCount}</td>
+                                </tr>`;
+                        tableBody.append(row);
+                    });
+
+                    $('#classInforTable').DataTable({
+                        paging: true,        // Bật phân trang
+                        pageLength: 5,       // Mỗi trang hiển thị 5 dòng
+                        lengthChange: false
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading class information:", error);
+                    alert("Failed to load class information.");
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

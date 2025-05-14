@@ -1,0 +1,135 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Results</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Load DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <!-- Load DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <style>
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body style="margin-top: 3%;">
+
+    <h2>Feedback Results for Class </h2>
+    <input type="hidden" id="classId" value="@ViewBag.classId" />
+   
+    <a style="background-color: orangered;" href="/Teacher/ClassesList" class="btn">Back</a>
+        <table id="feedbackTable" class="display">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>1. Regarding the teacher's punctuality</th>
+                    <th>2. The teacher adequately covers the topics required by the syllabus</th>
+                    <th>3. Teacher's response to student's questions in class</th>
+                    <th>4. Teaching skills of teacher</th>
+                    <th>5. Support from the teacher - guidance for practical exercises, answering questions out side of class</th>
+                    <th>6. To what extent are you pleased with the quality and effectiveness of the lecturer's teaching and mentoring in your learning progress?</th>
+                    <th>7. Comment</th>
+                    <th>Submit At</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    
+
+    <script>
+        $(document).ready(function () {
+            var classId = $("#classId").val();
+            if (!classId) {
+                alert("Can not found class id");
+                return;
+            }
+
+            $.ajax({
+                url: `https://localhost:7087/api/Feedback/getFeedbackResponseByClass/${classId}`,
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log("API Response:", data);
+
+                    if (!data || !Array.isArray(data)) {
+                        console.error("Invalid API response format!");
+                        return;
+                    }
+
+                    if (data.length === 0) {
+                        $("#feedbackTable tbody").html('<tr><td colspan="7">No feedback available</td></tr>');
+                        return;
+                    }
+
+                    var tbodyHtml = "";
+                    data.forEach((item, index) => {
+                        if (!item.answers || !Array.isArray(item.answers)) {
+                            console.error("Invalid Answers format!", item);
+                            return;
+                        }
+
+                        tbodyHtml += `<tr>
+            <td>${item.student}</td>
+            ${item.answers.map(answer => `<td>${answer && answer.trim() !== "" ? answer : "No Info"}</td>`).join('')}
+            ${item.answers.length === 7 ? "" : `<td>${item.comment && item.comment.trim() !== "" ? item.comment : "No Info"}</td>`}
+            <td>${item.submittedAt ? item.submittedAt : "No Info"}</td>
+        </tr>`;
+
+
+
+                    });
+
+                    $("#feedbackTable tbody").html(tbodyHtml);
+
+                    $("#feedbackTable").DataTable({
+                        paging: true,        // Bật phân trang
+                        pageLength: 5,       // Mỗi trang hiển thị 5 dòng
+                        lengthChange: false
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                    console.log("Response Text:", xhr.responseText);
+                    $("#feedbackTable tbody").html('<tr><td colspan="7">No feedback response for this class</td></tr>');
+                }
+            });
+
+        });
+
+
+
+
+
+
+
+       
+    </script>
+
+</body>
+</html>
