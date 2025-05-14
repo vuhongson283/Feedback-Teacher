@@ -13,7 +13,7 @@
         }
 
         .form-check-input:checked {
-            transform: scale(1.2); /* Tăng kích thước radio */
+            transform: scale(1.2); 
             box-shadow: 0 0 8px rgba(33, 150, 243, 0.6); /* Hiệu ứng phát sáng */
          }
 
@@ -164,10 +164,9 @@
                             </div>
                         </div>
 
-                        <!-- Ô nhập text -->
                     <input data-question-id="9" type="text" id="comment" />
 
-                        <!-- Nút Submit -->
+                        
                         <div class="text-end">
                             <button  class="btn btn-primary" id="submitBtn">Submit</button>
                         </div>
@@ -184,7 +183,7 @@
             $('#submitBtn').click(() => {
                 const studentId = $('#studentId').val();
                 const formId = $('#formId').val();
-                const comment = $('#comment').val().trim(); // Lấy giá trị comment, loại bỏ khoảng trắng thừa
+                const comment = $('#comment').val().trim(); 
 
                 if (!studentId || !formId) {
                     alert("Missing Student ID or Form ID!");
@@ -193,7 +192,7 @@
 
                 const answers = [];
 
-                // Lấy tất cả radio button được chọn
+                
                 $('input[type="radio"]:checked').each(function () {
                     answers.push({
                         questionId: $(this).data("question-id"),

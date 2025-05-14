@@ -9,14 +9,14 @@ namespace MVC_FeedBackWed.Controllers
         {
             var path = context.HttpContext.Request.Path.ToString().ToLower();
 
-            // Bỏ qua kiểm tra nếu đang ở trang login
+            
             if (path.Contains("/login"))
             {
                 base.OnActionExecuting(context);
                 return;
             }
 
-            // Kiểm tra session
+           
             var token = context.HttpContext.Session.GetString("Token");
             if (string.IsNullOrEmpty(token))
             {

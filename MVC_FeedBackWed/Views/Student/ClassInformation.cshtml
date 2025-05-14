@@ -51,14 +51,14 @@
                     var tableBody = $("#classInforTable tbody");
                     tableBody.empty();
 
-                    console.log("API Response:", data); // Debug xem data có đúng không
+                    console.log("API Response:", data); 
 
                     if (!data) {
                         alert("No class information found!");
                         return;
                     }
 
-                    // Nếu API trả về object, chuyển thành array để tránh lỗi
+                    
                     var classList = Array.isArray(data) ? data : [data];
 
                     classList.forEach((item) => {
@@ -73,7 +73,7 @@
                     });
 
                     $('#classInforTable').DataTable({
-                        paging: true,        // Bật phân trang
+                        paging: true,        
                         pageLength: 5,       // Mỗi trang hiển thị 5 dòng
                         lengthChange: false
                     });

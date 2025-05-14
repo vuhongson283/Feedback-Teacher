@@ -21,7 +21,7 @@ namespace PRN231_FinalProject.Controllers
         {
             try
             {
-                // Lấy ClassId của student
+               
                 var studentClass = _feedbackSystemContext.StudentClasses
                     .Where(sc => sc.StudentId == studentId)
                     .Select(sc => sc.ClassId)
@@ -54,7 +54,7 @@ namespace PRN231_FinalProject.Controllers
                     return NotFound("No active feedback form found for this class.");
                 }
 
-                // Lấy danh sách câu hỏi từ database trước
+               
                 var questions = _feedbackSystemContext.FeedbackQuestions
                     .Select(q => new
                     {
@@ -71,7 +71,7 @@ namespace PRN231_FinalProject.Controllers
                     RadioOptions = new List<string> { "Poor", "Fair", "Good", "Excellent" }
                 }).ToList();
 
-                // Tạo kết quả cuối cùng
+                
                 var result = new
                 {
                     feedbackForm.FormId,
@@ -102,11 +102,11 @@ namespace PRN231_FinalProject.Controllers
                     .GroupBy(fa => new { fa.StudentId, fa.Student.FullName })
                     .Select(group => new
                     {
-                        Student = "Student " + (group.Key.StudentId % 1000), // Ẩn danh sinh viên
-                        Answers = group.OrderBy(fa => fa.QuestionId) // Sắp xếp theo câu hỏi
-                                      .Select(fa => fa.Answer) // Lấy câu trả lời
+                        Student = "Student " + (group.Key.StudentId % 1000), 
+                        Answers = group.OrderBy(fa => fa.QuestionId) 
+                                      .Select(fa => fa.Answer) 
                                       .ToList(),
-                        SubmittedAt = group.Max(fa => fa.SubmittedAt) // Lấy thời gian nộp cuối cùng
+                        SubmittedAt = group.Max(fa => fa.SubmittedAt) 
                     })
                     .ToList();
 
@@ -185,8 +185,8 @@ namespace PRN231_FinalProject.Controllers
             try
             {
                 var feedbackForms = await _feedbackSystemContext.FeedbackForms
-                    .Where(f => f.Class.StudentClasses.Any(sc => sc.StudentId == studentId)) // Lấy feedback theo lớp học
-                    .Where(f => !_feedbackSystemContext.FeedbackAnswers // Lọc ra các feedback mà sinh viên chưa làm
+                    .Where(f => f.Class.StudentClasses.Any(sc => sc.StudentId == studentId)) 
+                    .Where(f => !_feedbackSystemContext.FeedbackAnswers 
                         .Any(a => a.StudentId == studentId && a.FormId == f.FormId))
                     .Select(f => new
                     {

@@ -43,7 +43,7 @@ namespace PRN231_FinalProject.Controllers
                                     f.SubjectId == t.SubjectId &&
                                     f.TeacherId == teacherId &&
                                     f.EndDate >= DateTime.Now)
-                        .Any(f => f.IsActive == true) // Chỉ kiểm tra nếu IsActive là true
+                        .Any(f => f.IsActive == true) 
 
                     })
                     .ToList();

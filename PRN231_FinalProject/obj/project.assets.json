@@ -3225,11 +3225,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\FU learning\\Sem8\\PRN231\\PRN231_FinalProject\\PRN231_FinalProject.csproj",
+      "projectUniqueName": "D:\\FinalProject\\Feedback-Teacher\\PRN231_FinalProject\\PRN231_FinalProject.csproj",
       "projectName": "PRN231_FinalProject",
-      "projectPath": "D:\\FU learning\\Sem8\\PRN231\\PRN231_FinalProject\\PRN231_FinalProject.csproj",
+      "projectPath": "D:\\FinalProject\\Feedback-Teacher\\PRN231_FinalProject\\PRN231_FinalProject.csproj",
       "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "D:\\FU learning\\Sem8\\PRN231\\PRN231_FinalProject\\obj\\",
+      "outputPath": "D:\\FinalProject\\Feedback-Teacher\\PRN231_FinalProject\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -60,11 +60,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\FU learning\\Sem8\\PRN231\\MVC_FeedBackWed\\MVC_FeedBackWed.csproj",
+      "projectUniqueName": "D:\\FinalProject\\Feedback-Teacher\\MVC_FeedBackWed\\MVC_FeedBackWed.csproj",
       "projectName": "MVC_FeedBackWed",
-      "projectPath": "D:\\FU learning\\Sem8\\PRN231\\MVC_FeedBackWed\\MVC_FeedBackWed.csproj",
+      "projectPath": "D:\\FinalProject\\Feedback-Teacher\\MVC_FeedBackWed\\MVC_FeedBackWed.csproj",
       "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "D:\\FU learning\\Sem8\\PRN231\\MVC_FeedBackWed\\obj\\",
+      "outputPath": "D:\\FinalProject\\Feedback-Teacher\\MVC_FeedBackWed\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",

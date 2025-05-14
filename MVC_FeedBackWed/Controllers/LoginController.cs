@@ -69,7 +69,7 @@ namespace MVC_FeedBackWed.Controllers
         [Route("logout")]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear(); // Xoá toàn bộ session
+            HttpContext.Session.Clear(); 
             return RedirectToAction("Login", "Login"); // Chuyển hướng về trang login
         }
 
